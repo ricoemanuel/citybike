@@ -79,7 +79,11 @@ const mostrarDatosEstaciones=(objeto)=>{
     crearDivEmergente()
     let overlay=document.getElementById("overlay");
     overlay.innerHTML=`<button id="${objeto.id}" onclick="seleccionarEmpresa(this)" class="btn btn-secondary pegar">Atrás</button><br>`
+    
     estaciones.forEach(element => {
+        if(estaciones.empty_slots==null){
+            element.empty_slots=0
+        }
         overlay.innerHTML+=`<br><b>${element.name}</b><br>
         Fecha de actualizacion: ${element.timestamp}<br>
         Espacios libre: ${element.empty_slots}<br>
