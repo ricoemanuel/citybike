@@ -51,7 +51,7 @@ const seleccionarEmpresa = async (objeto) => {
         .catch((error) => console.log(error));
 }
 const mostrarDatosEmpresa = (objeto) => {
-    
+    console.log(objeto)
     crearDivEmergente();
     let overlay=document.getElementById("overlay")
     overlay.innerHTML=`
@@ -60,9 +60,31 @@ const mostrarDatosEmpresa = (objeto) => {
         <p><b>Ubicación:</b> ${objeto.location.city}, ${objeto.location.country}</p>
         <p><b>Espacios libres:</b> ${contadorEstaciones(objeto.stations)}</p>
         <p><b>Bicicletas libres:</b> ${contadorBicis(objeto.stations)}</p>
-        <center><button class="btn btn-info">Ver estaciones</button></center>
+        <center><button id="${objeto.id}" onclick="verEstaciones(this)" class="btn btn-info">Ver estaciones</button></center>
     `
     
+}
+const verEstaciones=async(objeto)=>{
+    let url = `http://api.citybik.es/v2/networks/${objeto.id}`
+    await fetch(url)
+        .then((response) => response.json())
+        .then(async (data) => {
+            mostrarDatosEstaciones(data.network)
+        })
+        .catch((error) => console.log(error));
+}
+const mostrarDatosEstaciones=(objeto)=>{
+    let estaciones=objeto.stations;
+    crearDivEmergente()
+    let overlay=document.getElementById("overlay");
+    estaciones.forEach(element => {
+        overlay.innerHTML+=`<b>${element.name}</b><br>
+        Fecha de actualizacion: ${element.timestamp}<br>
+        Espacios libre: ${element.empty_slots}<br>
+        Bicicletas libre: ${element.free_bikes}<br>
+        total espacios: ${element.free_bikes+element.empty_slots}<br><hr>`
+    });
+
 }
 const contadorEstaciones=(station)=>{
     let acum=0
