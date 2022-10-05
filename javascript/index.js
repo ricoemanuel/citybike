@@ -84,6 +84,9 @@ const mostrarDatosEstaciones=(objeto)=>{
         if(estaciones.empty_slots==null){
             element.empty_slots=0
         }
+        if(estaciones.free_bikes==null){
+            element.free_bikes=0
+        }
         overlay.innerHTML+=`<br><b>${element.name}</b><br>
         Fecha de actualizacion: ${element.timestamp}<br>
         Espacios libre: ${element.empty_slots}<br>
