@@ -51,16 +51,17 @@ const seleccionarEmpresa = async (objeto) => {
         .catch((error) => console.log(error));
 }
 const mostrarDatosEmpresa = (objeto) => {
-    console.log(objeto)
+    
     crearDivEmergente();
     let overlay=document.getElementById("overlay")
     overlay.innerHTML=`
         <center><h4>${objeto.name}</h4></center>
+        <div class="descripcion">
         <p><b>Empresas:</b> ${objeto.company}</p>
         <p><b>Ubicación:</b> ${objeto.location.city}, ${objeto.location.country}</p>
         <p><b>Espacios libres:</b> ${contadorEstaciones(objeto.stations)}</p>
-        <p><b>Bicicletas libres:</b> ${contadorBicis(objeto.stations)}</p>
-        <center><button id="${objeto.id}" onclick="verEstaciones(this)" class="btn btn-info">Ver estaciones</button></center>
+        <p><b>Bicicletas libres:</b> ${contadorBicis(objeto.stations)}</p></div>
+        <center><button id="${objeto.id}" onclick="verEstaciones(this)" class="btn btn-info estaciones">Ver estaciones</button></center>
     `
     
 }
@@ -77,8 +78,9 @@ const mostrarDatosEstaciones=(objeto)=>{
     let estaciones=objeto.stations;
     crearDivEmergente()
     let overlay=document.getElementById("overlay");
+    overlay.innerHTML=`<button id="${objeto.id}" onclick="seleccionarEmpresa(this)" class="btn btn-secondary pegar">Atrás</button><br>`
     estaciones.forEach(element => {
-        overlay.innerHTML+=`<b>${element.name}</b><br>
+        overlay.innerHTML+=`<br><b>${element.name}</b><br>
         Fecha de actualizacion: ${element.timestamp}<br>
         Espacios libre: ${element.empty_slots}<br>
         Bicicletas libre: ${element.free_bikes}<br>
@@ -86,6 +88,7 @@ const mostrarDatosEstaciones=(objeto)=>{
     });
 
 }
+
 const contadorEstaciones=(station)=>{
     let acum=0
     station.forEach(element => {
